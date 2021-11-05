@@ -5,6 +5,7 @@ const { Product } = require("../models/Product")
 const { Payment } = require("../models/Payment")
 const { auth } = require("../middleware/auth");
 const async = require('async');
+let nodemailer = require('nodemailer');
 
 //=================================
 //             User
@@ -219,10 +220,36 @@ router.post('/successBuy', auth, (req,res) => {
             })
         }
     )
-
-    
-    
-
 })
 
+router.post('/sendEmail', (req, res) => {
+    console.log(req.body.Email)
+    let targetEmail = req.body.Email
+    let transporter = nodemailer.createTransport({
+        service: 'gmail'              //사용하고자 하는 서비스
+        , prot: 587
+        , host: 'smtp.gmlail.com'
+        , secure: false
+        , requireTLS: true
+        , auth: {
+            user: 'dstore1139@gmail.com'           //gmail주소입력
+            , pass: 'testing1139'                 //gmail패스워드 입력
+        }
+    });
+
+    let randNum = Math.random();
+    randNum= parseInt(randNum*10000)
+
+    let info = transporter.sendMail({   
+        from: '동아장터',             //보내는 주소 입력
+        to: targetEmail,                        //위에서 선언해준 받는사람 이메일
+        subject: '안녕하세요 동아장터 인증메일입니다3',                  //메일 제목
+        text: '인증번호는 '+randNum +" 입니다.",                       //내용
+    });
+
+    
+    console.log("전송", randNum)
+    return res.status(200).json({randNum})
+    
+})
 module.exports = router;

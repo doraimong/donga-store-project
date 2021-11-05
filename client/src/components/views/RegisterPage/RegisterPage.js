@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
+import Axios from 'axios';
 
 import {
   Form,
@@ -37,10 +38,34 @@ const tailFormItemLayout = {
 function RegisterPage(props) {
 
   const [Email, setEmail] = useState('')
-  const [Test, setTest] = useState('')
-  let onEmailHandler = (e) => {
-    setEmail(e.currentTarget.value)
+  const [Secret, setSecret] = useState('')  //서버에서 받은 인증번호
+  const [SecretFromUser, setSecretFromUser] = useState('')
+  const [ActiveButton, setActiveButton] = useState('')
+
+  const onChangeGetFromUser = (e) => {
+    setSecretFromUser(e.currentTarget.value)
   }
+
+  const onClickSendEmail = () => {
+    let body = { Email }
+    Axios.post('/api/users/sendEmail',body)
+      .then(response => {
+        setSecret(response.data.randNum)
+      })
+  }
+  const onClickCheck = () => {
+    console.log("Secret",Secret)
+    console.log("SecretFromUser",SecretFromUser)
+    if(Secret == SecretFromUser){
+      alert('성공')
+      //setActiveButton('true')
+    } else {
+      alert('실패')
+      //setActiveButton('')
+    }
+  }
+
+  
 
   
 
@@ -162,11 +187,19 @@ function RegisterPage(props) {
                 {errors.email && touched.email && (
                   <div className="input-feedback">{errors.email}</div>
                 )}
-                {touched.email  && setTest(values.email) && console.log(Test) }             
+                {touched.email  && setEmail(values.email) }             
               </Form.Item>
               {/*{touched.email && console.log(values.email)} => 여기서 이메일 매순간 체크한다.*/}
-
-
+              <div style={{display: 'flex', justifyContent:'flex-end'}}>
+                <Input onChange={onChangeGetFromUser} placeholder="Basic usage" style={{ width: '40%' }}/>
+                <Button type="primary" onClick={onClickSendEmail} >이메일 전송</Button>
+                <Button type="primary" onClick={onClickCheck} >Check</Button>
+                {/*작동 순서 : 
+                  1. 이메일 입력
+                  2. 버튼두개 (서버에서 email 보낼 버튼, 확인 버튼)
+                  3. 확인 버튼으로 확인하기
+                */}
+              </div>
               <Form.Item required label="Password" hasFeedback validateStatus={errors.password && touched.password ? "error" : 'success'}>
                 <Input
                   id="password"
@@ -207,8 +240,8 @@ function RegisterPage(props) {
                 </Button>
               </Form.Item>
             </Form>
-            <button onClick ={() => console.log("eee")} disabled={!Test}>       {/*입력되면 버튼 활성화 구현완료*/}
-            {Test}
+            <button onClick ={() => console.log("eee")} disabled={!ActiveButton}>       {/*입력되면 버튼 활성화 구현완료*/}
+              Test
             </button>
           </div>
         );
