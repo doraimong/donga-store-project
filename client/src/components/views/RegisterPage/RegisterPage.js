@@ -235,8 +235,8 @@ function RegisterPage(props) {
               </Form.Item>
 
               <Form.Item {...tailFormItemLayout}>
-                <Button onClick={handleSubmit} type="primary" disabled={!ActiveButton && !isSubmitting}>
-                  Submit
+                <Button onClick={handleSubmit} type="primary" disabled={!ActiveButton && !isSubmitting}>  {/*disable 조절로 경우2개 나온다. 이메일 인증하고 바로 버튼 액티브 or 이메일 인증하고 모든항목 다 체크하고 액티브 현재는 전자 후자로 하려면 &&를 ||로 바꿔야*/}
+                  {!ActiveButton && !isSubmitting ? console.log("true") : console.log("false")}
                 </Button>
               </Form.Item>
             </Form>
