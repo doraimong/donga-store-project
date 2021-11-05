@@ -58,10 +58,10 @@ function RegisterPage(props) {
     console.log("SecretFromUser",SecretFromUser)
     if(Secret == SecretFromUser){
       alert('성공')
-      //setActiveButton('true')
+      setActiveButton('true')
     } else {
       alert('실패')
-      //setActiveButton('')
+      setActiveButton('')
     }
   }
 
@@ -235,12 +235,12 @@ function RegisterPage(props) {
               </Form.Item>
 
               <Form.Item {...tailFormItemLayout}>
-                <Button onClick={handleSubmit} type="primary" disabled={isSubmitting}>
+                <Button onClick={handleSubmit} type="primary" disabled={!ActiveButton && !isSubmitting}>
                   Submit
                 </Button>
               </Form.Item>
             </Form>
-            <button onClick ={() => console.log("eee")} disabled={!ActiveButton}>       {/*입력되면 버튼 활성화 구현완료*/}
+            <button onClick ={() => console.log("eee")} type="primary" disabled={!ActiveButton}>       {/*입력되면 버튼 활성화 구현완료*/}
               Test
             </button>
           </div>
