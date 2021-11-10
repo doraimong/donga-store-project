@@ -15,7 +15,7 @@ function HistoryPage(props) {
                         <th>Payment Id</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Datd of Purchase</th>
+                        <th>Date of Purchase</th>
                     </tr>
                 </thead>
 

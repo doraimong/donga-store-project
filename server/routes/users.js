@@ -222,23 +222,22 @@ router.post('/successBuy', auth, (req,res) => {
     )
 })
 
-router.post('/sendEmail', (req, res) => {
-    console.log(req.body.Email)
+router.post('/sendEmail', (req, res) => {               //프론트에서 이메일 버튼 클릭하면 여기서부터 동작
+    
     let targetEmail = req.body.Email
     let randNum
-    //console.log(targetEmail.match(/\@donga\.ac\.kr$/))
     
-    if(targetEmail.match(/\@gmail\.com$/) ){
+    if( targetEmail.match(/\@donga\.ac\.kr$/) ){        //이메일 형식 검사 : ...@donga.ac.kr 인지 아닌지
         console.log("true");
         let transporter = nodemailer.createTransport({
-            service: 'gmail'              //사용하고자 하는 서비스
+            service: 'gmail'                            //이메일 인증 시 사용하고자 하는 서비스
             , prot: 587
             , host: 'smtp.gmlail.com'
             , secure: false
             , requireTLS: true
             , auth: {
                 user: 'dstore1139@gmail.com'           //gmail주소입력
-                , pass: 'testing1139'                 //gmail패스워드 입력
+                , pass: 'testing1139'                   //gmail패스워드 입력
             }
         })
 
@@ -246,18 +245,16 @@ router.post('/sendEmail', (req, res) => {
         randNum= parseInt(randNum*10000);
 
         let info = transporter.sendMail({   
-            from: '동아장터',             //보내는 주소 입력
-            to: targetEmail,                        //위에서 선언해준 받는사람 이메일
-            subject: '안녕하세요 동아장터 인증메일입니다3',                  //메일 제목
-            text: '인증번호는 '+randNum +" 입니다.",                       //내용
+            from: '동아장터',                                  
+            to: targetEmail,                                  //위에서 선언해준 받는사람 이메일
+            subject: '안녕하세요! 동아장터 본인인증 메일입니다',   //메일 제목
+            text: '인증번호는 '+randNum +" 입니다. \n\n인증번호를 넣고 가입 절차를 완료해주세요",            //내용
         })
-    } else {
-        console.log("false")
+        console.log("전송", randNum)
+        return res.status(200).json({randNum})
+    } else {                                               //이메일 형식 검사해서 @donga.ac.kr이 아닐때 
+        console.log('실패')
+        res.send("실패")
     }
-    
-    
-    console.log("전송", randNum)
-    return res.status(200).json({randNum})
-    
 })
 module.exports = router;

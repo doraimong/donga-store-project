@@ -8,13 +8,13 @@ const {Title} = Typography;
 
 
 const Continents = [                   //카테고리 
-    { key:1, value: "Africa" },
-    { key:2, value: "Europe" },
-    { key:3, value: "Asia" },
-    { key:4, value: "North America" },
-    { key:5, value: "south America" },
-    { key:6, value: "Australia" },
-    { key:7, value: "Antarctica" }
+    { key:1, value: "도서" },
+    { key:2, value: "전자제품" },
+    { key:3, value: "의류" },
+    { key:4, value: "뷰티" },
+    { key:5, value: "생활용품" },
+    { key:6, value: "스포츠/레저" },
+    { key:7, value: "반려동물" }
 ]
 
 function UploadProductPage(props) {

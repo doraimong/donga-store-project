@@ -1,31 +1,31 @@
 const continents = [
     {
         "_id": 1,
-        "name": "Africa"
+        "name": "도서"
     },
     {
         "_id": 2,
-        "name": "Europe"
+        "name": "전자제품"
     },
     {
         "_id": 3,
-        "name": "Asia"
+        "name": "의류"
     },
     {
         "_id": 4,
-        "name": "North America"
+        "name": "뷰티"
     },
     {
         "_id": 5,
-        "name": "South America"
+        "name": "생활용품"
     },
     {
         "_id": 6,
-        "name": "Australia"
+        "name": "스포츠/레저"
     },
     {
         "_id": 7,
-        "name": "Antarctica"
+        "name": "반려동물"
     } 
 ]
 

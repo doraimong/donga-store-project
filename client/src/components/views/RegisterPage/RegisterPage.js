@@ -6,10 +6,12 @@ import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
 import Axios from 'axios';
 
+
 import {
   Form,
   Input,
   Button,
+  notification,
 } from 'antd';
 
 const formItemLayout = {
@@ -38,36 +40,54 @@ const tailFormItemLayout = {
 function RegisterPage(props) {
 
   const [Email, setEmail] = useState('')
-  const [Secret, setSecret] = useState('')  //서버에서 받은 인증번호
-  const [SecretFromUser, setSecretFromUser] = useState('')
+  const [Secret, setSecret] = useState('')                  //서버에서 받은 인증번호
+  const [SecretFromUser, setSecretFromUser] = useState('')  //사용자에게 입력받은 번호
   const [ActiveButton, setActiveButton] = useState('')
 
   const onChangeGetFromUser = (e) => {
     setSecretFromUser(e.currentTarget.value)
   }
 
-  const onClickSendEmail = () => {
+  const onClickSendEmail = () => {                          //서버로 요청
     let body = { Email }
     Axios.post('/api/users/sendEmail',body)
       .then(response => {
-        setSecret(response.data.randNum)
+        if(response.data=="실패"){                          //이메일 규격에 맞지 않으면 재입력을 요청
+          notification['info']({
+            message: 'Dong-A Store',
+            description:
+              '동아장터에 맞는 이메일을 입력해주세요.',
+          })        
+        }else {
+          setSecret(response.data.randNum)
+          notification['success']({ 
+            message: 'Dong-A Store',
+            description:
+              '인증 메일이 전송되었습니다!.',
+          })
+        }
       })
-  }
-  const onClickCheck = () => {
-    console.log("Secret",Secret)
+  } 
+  const onClickCheck = () => {                              //인증 번호 확인버튼 클릭
+    //console.log("Secret",Secret=="null" ? console.log("1") : console.log("2"))
     console.log("SecretFromUser",SecretFromUser)
-    if(Secret == SecretFromUser){
-      alert('성공')
+    if(Secret == SecretFromUser && Secret){                            //인증이 확인되면 '인증 성공'을 출력
+      notification['success']({
+        message: 'Dong-A Store',
+        description:
+          '인증 성공했습니다!.',
+      })
       setActiveButton('true')
     } else {
-      alert('실패')
+      notification['error']({
+        message: 'Dong-A Store',
+        description:
+          '인증 실패했습니다!.',
+      })
       setActiveButton('')
     }
   }
 
-  
-
-  
 
   const dispatch = useDispatch();
   return (
@@ -139,7 +159,7 @@ function RegisterPage(props) {
               <Form.Item required label="Name">
                 <Input
                   id="name"
-                  placeholder="Enter your name"
+                  placeholder="이름을 입력하세요"
                   type="text"
                   value={values.name}
                   onChange={handleChange}
@@ -157,7 +177,7 @@ function RegisterPage(props) {
               <Form.Item required label="Last Name">
                 <Input
                   id="lastName"
-                  placeholder="Enter your Last Name"
+                  placeholder="성을 입력하세요"
                   type="text"
                   value={values.lastName}
                   onChange={handleChange}
@@ -175,7 +195,7 @@ function RegisterPage(props) {
                 <Input
                   onCheck={values.email}
                   id="email"
-                  placeholder="Enter your Email"
+                  placeholder="이메일을 입력하세요"
                   type="email"
                   value={values.email}
                   onChange={handleChange}
@@ -190,10 +210,10 @@ function RegisterPage(props) {
                 {touched.email  && setEmail(values.email) }             
               </Form.Item>
               {/*{touched.email && console.log(values.email)} => 여기서 이메일 매순간 체크한다.*/}
-              <div style={{display: 'flex', justifyContent:'flex-end'}}>
-                <Input onChange={onChangeGetFromUser} placeholder="Basic usage" style={{ width: '40%' }}/>
-                <Button type="primary" onClick={onClickSendEmail} >이메일 전송</Button>
-                <Button type="primary" onClick={onClickCheck} >Check</Button>
+              <div style={{display: 'flex', justifyContent:'flex-end', marginBottom:'5%'}}>
+                <Input onChange={onChangeGetFromUser} placeholder="인증번호 입력" style={{ width: '30%' }}/>
+                <Button  onClick={onClickSendEmail} size='middle' style={{marginLeft:'1px', marginRight:'1px'}} >Email</Button>
+                <Button  onClick={onClickCheck} size='middle' >Check</Button>
                 {/*작동 순서 : 
                   1. 이메일 입력
                   2. 버튼두개 (서버에서 email 보낼 버튼, 확인 버튼)
@@ -203,7 +223,7 @@ function RegisterPage(props) {
               <Form.Item required label="Password" hasFeedback validateStatus={errors.password && touched.password ? "error" : 'success'}>
                 <Input
                   id="password"
-                  placeholder="Enter your password"
+                  placeholder="비밀번호를 입력하세요"
                   type="password"
                   value={values.password}
                   onChange={handleChange}
@@ -220,7 +240,7 @@ function RegisterPage(props) {
               <Form.Item required label="Confirm" hasFeedback>
                 <Input
                   id="confirmPassword"
-                  placeholder="Enter your confirmPassword"
+                  placeholder="비밀번호 확인"
                   type="password"
                   value={values.confirmPassword}
                   onChange={handleChange}
@@ -240,9 +260,7 @@ function RegisterPage(props) {
                 </Button>
               </Form.Item>
             </Form>
-            <button onClick ={() => console.log("eee")} type="primary" disabled={!ActiveButton}>       {/*입력되면 버튼 활성화 구현완료*/}
-              Test
-            </button>
+
           </div>
         );
       }}
