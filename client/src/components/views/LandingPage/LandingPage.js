@@ -7,10 +7,14 @@ import ImageSlider from '../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';   //검색 기능 컴포넌트
+import Recommendation from '../Recommendation/Recommendation';
 import { continents, price } from './Sections/Datas'
+import { useSelector } from "react-redux";
 
 
 function LandingPage() {
+
+    const user = useSelector(state => state.user)
 
     const [Products, setProducts] = useState([])
     const [Skip, setSkip] = useState(0)
@@ -129,6 +133,11 @@ function LandingPage() {
         <div style={{ width: '75%', margin: '3rem auto'}}>
             <div style={{ textAlign: 'center'}}>
                 <h2>중고 상품 거래로 환경을 지키세요!<Icon type="rocket"/> </h2>
+            </div>
+
+            <div>
+            <Recommendation />
+            {console.log("여기",user.userData)}
             </div>
 
 
