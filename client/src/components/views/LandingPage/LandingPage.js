@@ -13,8 +13,8 @@ import { useSelector } from "react-redux";
 
 
 function LandingPage() {
-
-    const user = useSelector(state => state.user)
+    
+    const user = useSelector(state => state.user)   //redux store에 접근 가능하게 해준다.
 
     const [Products, setProducts] = useState([])
     const [Skip, setSkip] = useState(0)
@@ -38,6 +38,7 @@ function LandingPage() {
     }, [])
 
     const getProducts = (body) => {
+        console.log("랜딩",body)
         axios.post('/api/product/products', body)
             .then(response => {
                 if(response.data.success){
@@ -54,6 +55,7 @@ function LandingPage() {
             })
     }
     
+    //'더보기 버튼' 누를때
     const loadMoreHandler = () => {
         let skip = Skip + Limit
         let body = {    //상품 노출 갯수 관리
@@ -67,6 +69,7 @@ function LandingPage() {
         setSkip(skip)
     }
 
+    //출력
     const renderCards = Products.map((product, index) => {
         return <Col lg={6} md={8} xs={24} key={index}>
             <Card
@@ -102,6 +105,7 @@ function LandingPage() {
         return array;
     }
 
+    //카테고리, 가격을 필터로 만듦
     const handleFilters = (filters, category) => {  
         const newFilters = { ...Filters }
         newFilters[category] = filters
@@ -114,6 +118,7 @@ function LandingPage() {
         setFilters(newFilters)
     }
 
+    //검색
     const updateSearchTerm = (newSearchTerm) => {   //newSearchTerm이 searchFeature.js에서 받아온 값을 state에 실제로 넣음(상위(현)컴포넌트 state업데이트)
         
         let body = {
@@ -137,7 +142,7 @@ function LandingPage() {
 
             <div>
             <Recommendation />
-            {console.log("여기",user.userData)}
+            {/*console.log("여기",user.userData)*/}
             </div>
 
 

@@ -94,7 +94,7 @@ router.post('/products', (req, res)=>{ // router의 /api/porduct를 타고 여�
   }
 })
 
-
+//한개의 상품 정보 가져올떄 DetailProductPage.js
 router.get('/products_by_id', (req, res)=>{ // router의 /api/porduct를 타고 여기로 온다. 결과적인 주소 /api/product
   
   let type = req.query.type //링크를 쿼리형태로 이용 주의!
