@@ -92,7 +92,8 @@ router.post('/products', (req, res)=>{ // router의 /api/porduct를 타고 여�
         })
 
   }
-})   
+})
+
 
 router.get('/products_by_id', (req, res)=>{ // router의 /api/porduct를 타고 여기로 온다. 결과적인 주소 /api/product
   

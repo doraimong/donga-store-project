@@ -75,6 +75,7 @@ router.get("/logout", auth, (req, res) => {
 
 router.post("/addToCart", auth, (req, res) => {
     
+
     //먼저 User Collection에 해당 유저의 한명의 정보를 가져오기
     User.findOne({ _id: req.user._id },     //auth 미들웨어에서 쿠키속에 토큰을 이용해 유저의 정보를 가져온다.
         (err, userInfo) => {                //userInfo에는 User스키마속 정보가 들어있다.(+카트정보)
@@ -86,6 +87,7 @@ router.post("/addToCart", auth, (req, res) => {
                     duplicate = true;
                 }        
             })
+            
             
             //상품이 있는 경우 quantity 만 올린다. 
             if(duplicate){
@@ -99,23 +101,41 @@ router.post("/addToCart", auth, (req, res) => {
                     }
                 )
             } else {                                                        //상품이 없는 경우 신규 카트에 추가
-                User.findOneAndUpdate(
-                    { _id: req.user._id },                                  //유저검색
-                    {
-                        $push: {                                            //카트에 담길 물건 정보 
-                            cart: {
-                                id: req.body.productId,
-                                quantity: 1,
-                                date: Date.now()
-                            }
-                        }
-                    },
-                    { new: true },                                          //업데이트 된 정보를 받기위해
-                    (err, userInfo) => {
-                        if(err) return res.status(400).json({success: false, err})
-                        res.status(200).send(userInfo.cart)
+                let getcategory;
+                Product.findOne(
+                    { _id: req.body.productId},
+                    (err, continents) => {
+                        if(err) console.log("/router/users.js 중반부",err)
+                        getcategory = continents.continents
+                        console.log("순서1",typeof(Date.now()))                                 //여기 비동기 문제가 있다
                     }
-                ) 
+                ).then(
+                    () =>{
+                        console.log("순서2", typeof(getcategory))
+                        User.findOneAndUpdate(
+                            { _id: req.user._id },                                  //유저검색
+                            {
+                                $push: {                                            //카트에 담길 물건 정보 
+                                    cart: {
+                                        id: req.body.productId,
+                                        quantity: 1,
+                                        date: Date.now(),
+                                        category: getcategory,
+                                    }
+                                }
+                            },
+                            { new: true },                                          //업데이트 된 정보를 받기위해
+                            (err, userInfo) => {
+                                if(err) return res.status(400).json({success: false, err})
+                                res.status(200).send(userInfo.cart)
+                            }
+                        )
+                    }
+                    
+                )
+
+                
+                 
             }
         })
 });
