@@ -71,6 +71,7 @@ router.post('/products', (req, res)=>{ // router의 /api/porduct를 타고 여�
         .skip(skip)
         .limit(limit)
         .exec((err, productInfo) => { //productInfo에 모든 정보있다.
+          //console.log("포스트 사이즈1",productInfo.length)
           if(err) return res.status(400).json({success: false, err})
           return res.status(200).json({
             success: true, productInfo, 
@@ -84,6 +85,7 @@ router.post('/products', (req, res)=>{ // router의 /api/porduct를 타고 여�
         .skip(skip)
         .limit(limit)
         .exec((err, productInfo) => { //productInfo에 모든 정보있다.
+          //console.log("포스트 사이즈2",productInfo.length)
           if(err) return res.status(400).json({success: false, err})
           return res.status(200).json({
             success: true, productInfo, 

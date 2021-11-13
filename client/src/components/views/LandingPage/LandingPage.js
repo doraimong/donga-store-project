@@ -38,7 +38,7 @@ function LandingPage() {
     }, [])
 
     const getProducts = (body) => {
-        console.log("랜딩",body)
+        //console.log("랜딩",body)
         axios.post('/api/product/products', body)
             .then(response => {
                 if(response.data.success){
@@ -47,6 +47,7 @@ function LandingPage() {
                         setProducts([...Products, ...response.data.productInfo])    // 기존의 state인 Products를 그대로 가져와 더보기 개수 만큼 붙여준다.
                     } else {
                         setProducts(response.data.productInfo)
+                        //console.log("원조가져오기",response.data.productInfo)
                     }
                     setPostSize(response.data.postSize)
                 } else {
@@ -133,7 +134,8 @@ function LandingPage() {
         getProducts(body)
     }
 
-
+    //console.log("유저",user)
+    //user.userData ? console.log("있다.") : console.log("없다")
     return (
         <div style={{ width: '75%', margin: '3rem auto'}}>
             <div style={{ textAlign: 'center'}}>
@@ -141,7 +143,7 @@ function LandingPage() {
             </div>
 
             <div>
-            <Recommendation />
+            {user.userData && user.userData.isAuth ? <Recommendation /> : false}    {/* 로그인 한 상태에서 추천상품 보이도록 */}
             {/*console.log("여기",user.userData)*/}
             </div>
 
