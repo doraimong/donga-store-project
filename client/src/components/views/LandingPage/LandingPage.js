@@ -38,7 +38,7 @@ function LandingPage() {
     }, [])
 
     const getProducts = (body) => {
-        //console.log("랜딩",body)
+        console.log("순서1",body)
         axios.post('/api/product/products', body)
             .then(response => {
                 if(response.data.success){
@@ -54,6 +54,7 @@ function LandingPage() {
                     alert("DB에서 상품 가져오기 실패했습니다")
                 }
             })
+        console.log("순서1.2",body)
     }
     
     //'더보기 버튼' 누를때
@@ -68,17 +69,18 @@ function LandingPage() {
         
         getProducts(body)
         setSkip(skip)
+        console.log("순서2", Products)
     }
 
     //출력
     const renderCards = Products.map((product, index) => {
-        return <Col lg={6} md={8} xs={24} key={index}>
+        return <Col lg={6} md={8} xs={12} key={index}>
             <Card
                 cover={<a href={`/product/${product._id}`}> <ImageSlider images={product.images}/> </a>}  //ImageSlider 컴포넌트에서 사진을 받도록한다.
             >
                 <Meta
                     title={product.title}
-                    description={`$${product.price}`}
+                    description={`${product.price} 원`}
                 />
             </Card>
         </Col>
@@ -138,14 +140,18 @@ function LandingPage() {
     //user.userData ? console.log("있다.") : console.log("없다")
     return (
         <div style={{ width: '75%', margin: '3rem auto'}}>
+            <div>
+                {user.userData && user.userData.isAuth ? <Recommendation /> : false}    {/* 로그인 한 상태에서 추천상품 보이도록 */}
+                {/*console.log("여기",user.userData)*/}
+            </div>
+
+            
+            
             <div style={{ textAlign: 'center'}}>
                 <h2>중고 상품 거래로 환경을 지키세요!<Icon type="rocket"/> </h2>
             </div>
 
-            <div>
-            {user.userData && user.userData.isAuth ? <Recommendation /> : false}    {/* 로그인 한 상태에서 추천상품 보이도록 */}
-            {/*console.log("여기",user.userData)*/}
-            </div>
+            
 
 
             <Row gutter={[16, 16]}> 
