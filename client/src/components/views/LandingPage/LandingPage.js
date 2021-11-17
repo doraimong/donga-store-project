@@ -38,7 +38,7 @@ function LandingPage() {
     }, [])
 
     const getProducts = (body) => {
-        console.log("순서1",body)
+        //console.log("순서1",body)
         axios.post('/api/product/products', body)
             .then(response => {
                 if(response.data.success){
@@ -54,7 +54,7 @@ function LandingPage() {
                     alert("DB에서 상품 가져오기 실패했습니다")
                 }
             })
-        console.log("순서1.2",body)
+        //console.log("순서1.2",body)
     }
     
     //'더보기 버튼' 누를때
@@ -145,8 +145,6 @@ function LandingPage() {
                 {/*console.log("여기",user.userData)*/}
             </div>
 
-            
-            
             <div style={{ textAlign: 'center'}}>
                 <h2>중고 상품 거래로 환경을 지키세요!<Icon type="rocket"/> </h2>
             </div>

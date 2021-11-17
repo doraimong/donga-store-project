@@ -7,11 +7,13 @@ import { Icon, Col, Card, Row, Carousel } from 'antd';
 
 /*
 [대전제 : 카트에 없는 상품을 추천한다.]
-
 -카트의 물건 흐름 -> 카트 물건의 카테고리를 추출 최다 항목카테고리의 상품(카트에 없는) 을 추천 
                 -> 최다 항목을 추출할 수 없다(전자 = 도서의 경우) 는 추천 안하거나 보류 !
-
 - 리덕스에 추천할 물건 정보 넣어서 다양한 페이지에서 사용가능하게하기 vs props로 쉽게 받아서 하기 landingpage에만 추천받기 -> 후자를 하고 후자 성공시 전자 시도 ㄱㄱ!!
+
+현재 만든거 동작 
+getCategorties()에서 장바구니속 최빈 카테고리(몇개든) 골라서 getProducts()에서 물건을 가져온다.
+organizeProducts에서 뺄물건 빼고 organizeProducts()에서 범위 내 랜덤값 4개(보다 작으면 전부 출력)  
 */
 function Recommendation() {
     
@@ -19,8 +21,9 @@ function Recommendation() {
     //console.log("!!!여기는 추천",user.userData)
 
     const [Products, setProducts] = useState([])
+    //const [Pick, setPick] = useState([])
+
     useEffect(() => {
-        
         getCategories();
         console.log("어디한번 응답을 볼까?2",Products)
     }, [])
@@ -54,16 +57,15 @@ function Recommendation() {
             if(theMostCategory[i] == best)theMostCategoryIndex.push(i)
         }
         //console.log("index",theMostCategoryIndex)
-
-        if(theMostCategoryIndex.length > 0){  //추천 할 카테고리가 있다, 없다. 
+        
+        //추천 할 카테고리가 있다, 없다. 
+        if(theMostCategoryIndex.length > 0){  
             //해당 카테고리 물건 가져오기 
             let body={
                 filters:{continents: theMostCategoryIndex}
             }
             getProducts(body)
-            Products && console.log("body", Products)
-            //!!!여기서 할게 아니라 저 위에서 해야한다.getProducts 에서 다루자
-            
+            Products && console.log("body", Products)           
             
             //가져온 물건을 어떻게 정리하지?
         }else {
@@ -73,47 +75,60 @@ function Recommendation() {
          // 추천 상품 목록을 만드는데 -> 해당 카테고리(하나든 두개든) 상품 모아 -> 그 중 장바구니에 상품은 삭제 -> 그 중 랜덤하게 노출
     }
 
+
     const organizeProducts = (products) => {
-        //물건 제거 
+        //추천할 물건에서 장바구니 물건 제거 
         console.log("organize",products)
         console.log("organize2",user.userData.cart)
+        
         let test = products.length
         for(let i=0; i<products.length; i++){
             for(let ii=0; ii<user.userData.cart.length; ii++){
                 /*console.log("organize",products[i]._id)
                 console.log("organize2",user.userData.cart[ii].id)*/
                 if(products[i]._id == user.userData.cart[ii].id){
-                    console.log("같은 아이디",products[i]._id)
                     products.splice(i,1)
                 }
             }
-            /*if(test-1 == i){
-                console.log("확인", products[i])
-                for(let i=0; i<products.length; i++){
-                    console.log("확인", products[i])
-                }
-            }*/
         }
+        
         setProducts(products)
         console.log("확인",products)
 
-        
-
-        //물건 선정
-
+        //추천할 필요 없는 장바구니 속 물건뺴고 나머지 물건 중 4개pick  -> showSwiper는 출력
+        if(products.length > 4){
+            let pick = [], pickProducts = [];
+            pick = selectIndex(products.length-1, 4)
+            for(let i=0; i<pick.length; i++){
+                let index = pick[i];
+                pickProducts.push(products[index])
+            }
+            console.log("픽한 물건모음",pickProducts)
+            setProducts(pickProducts)
+        }
     }
+
+
+    //특정 범위내, 특정 개수만큼 랜덤 값 뽑기
+    const selectIndex = (totalIndex, selectingNumber) => {  //인자 : 범위, 뽑을 숫자 갯수
+        let randomIndexArray = []
+        for (let i=0; i<selectingNumber; i++) {   //check if there is any duplicate index
+          let randomNum = Math.floor(Math.random() * totalIndex)
+          if (randomIndexArray.indexOf(randomNum) === -1) {
+            randomIndexArray.push(randomNum)
+          } else { //if the randomNum is already in the array retry
+            i--
+          }
+        }
+        return randomIndexArray
+      }
   
     
 
     return (
         <div>
-            
-            {/*<ProductSwiper detail={products} />*/}
-            {/* console.log("Tlqkf",Products)*/}
-            {<ShowSwiper products={Products} />}
-            
-
-
+            {/* 추천 물건 총리스트 - 장바구니속 물건 - 4개 pick => 뺄거 다 빼고 추천 물건 총리스트에서 남은 물건이 있으면 추천화면 보여줘 */}
+            {Products.length ? <ShowSwiper products={Products} /> : false}
         </div>
     )
 }
