@@ -141,7 +141,7 @@ function LandingPage() {
     return (
         <div style={{ width: '75%', margin: '3rem auto'}}>
             <div>
-                {user.userData && user.userData.isAuth ? <Recommendation /> : false}    {/* 로그인 한 상태에서 추천상품 보이도록 */}
+                {user.userData && user.userData.isAuth && user.userData.cart.length>0? <Recommendation /> : false}    {/* 로그인 한 상태 && 인증된상태 && 카트에 상품이 있을때 */}
                 {/*console.log("여기",user.userData)*/}
             </div>
 

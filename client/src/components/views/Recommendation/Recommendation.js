@@ -20,6 +20,7 @@ function Recommendation() {
 
     const [Products, setProducts] = useState([])
     useEffect(() => {
+        
         getCategories();
         console.log("어디한번 응답을 볼까?2",Products)
     }, [])
@@ -28,7 +29,8 @@ function Recommendation() {
         axios.post('/api/product/products', body)
             .then(response=> {
                 if(response.data.success){
-                    setProducts(response.data.productInfo)
+                    //setProducts(response.data.productInfo)
+                    organizeProducts(response.data.productInfo)
                     console.log("어디한번 응답을 볼까?",response.data.productInfo)
                     
                 } else {
@@ -69,6 +71,36 @@ function Recommendation() {
         }
 
          // 추천 상품 목록을 만드는데 -> 해당 카테고리(하나든 두개든) 상품 모아 -> 그 중 장바구니에 상품은 삭제 -> 그 중 랜덤하게 노출
+    }
+
+    const organizeProducts = (products) => {
+        //물건 제거 
+        console.log("organize",products)
+        console.log("organize2",user.userData.cart)
+        let test = products.length
+        for(let i=0; i<products.length; i++){
+            for(let ii=0; ii<user.userData.cart.length; ii++){
+                /*console.log("organize",products[i]._id)
+                console.log("organize2",user.userData.cart[ii].id)*/
+                if(products[i]._id == user.userData.cart[ii].id){
+                    console.log("같은 아이디",products[i]._id)
+                    products.splice(i,1)
+                }
+            }
+            /*if(test-1 == i){
+                console.log("확인", products[i])
+                for(let i=0; i<products.length; i++){
+                    console.log("확인", products[i])
+                }
+            }*/
+        }
+        setProducts(products)
+        console.log("확인",products)
+
+        
+
+        //물건 선정
+
     }
   
     
