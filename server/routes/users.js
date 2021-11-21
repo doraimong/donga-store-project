@@ -101,17 +101,17 @@ router.post("/addToCart", auth, (req, res) => {
                     }
                 )
             } else {                                                        //상품이 없는 경우 신규 카트에 추가
-                let getcategory;
+                //let getcategory;
                 Product.findOne(
                     { _id: req.body.productId},
                     (err, continents) => {
                         if(err) console.log("/router/users.js 중반부",err)
-                        getcategory = continents.continents
-                        console.log("순서1",typeof(Date.now()))                                 //여기 비동기 문제가 있다
+                        //getcategory = continents.continents
+                        console.log("순서1",continents)                                 //여기 비동기 문제가 있다
                     }
                 ).then(
-                    () =>{
-                        console.log("순서2", typeof(getcategory))
+                    (getAll) =>{
+                        console.log("순서2", )
                         User.findOneAndUpdate(
                             { _id: req.user._id },                                  //유저검색
                             {
@@ -120,7 +120,7 @@ router.post("/addToCart", auth, (req, res) => {
                                         id: req.body.productId,
                                         quantity: 1,
                                         date: Date.now(),
-                                        category: getcategory,
+                                        category: getAll.continents,
                                     }
                                 }
                             },

@@ -75,7 +75,7 @@ function UploadProductPage(props) {
     return (
         <div style={{ maxWidth:'700px', margin: '2rem auto'}}>
             <div style={{testAlign: 'center', marginBottom:'2rem'}}>
-                <h2> 여행 상품 업로드</h2>  {/*level로 글자크기 조절*/}
+                <h2> 중고 상품 업로드</h2>  {/*level로 글자크기 조절*/}
             </div>
 
             <Form onSubmit={submitHandler}>
