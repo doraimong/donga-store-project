@@ -110,13 +110,24 @@ router.get('/products_by_id', (req, res)=>{ // router의 /api/porduct를 타고 
       return item
     })
   }
-
-  Product.find({ _id: { $in: productIds } }) //약 6줄 위 배열로 만든 구조를 이용해서 검색
+  //한개의 물건 정보를 호출(물건 상세보기 페이지)에서 부를때 views +1
+  if(type === "single"){
+    Product.updateOne(
+      { _id: productIds}, 
+      { $inc: { views: 1 }}, 
+      { new: true },                                          //해줌으로써 쿼리문으로 업데이트된 결과 err, userInfo 정보를 받는다. -> 
+      (err, userInfo) => {                                    //까지 해줘야 적용이 완료된다.
+          if(err) alert("view 문제발생")
+      }
+    ) 
+  }
+  Product.find({ _id: { $in: productIds } }) //if(type === "array") 여기서 만든 구조를 이용해서 검색
         .populate('writer')         //writer의 모든 정보 가져오기 
         .exec((err, product) => {   //쿼리를 돌려준다.                            =>!!!!!!!!!!잘몰라
           if(err) return res.status(400).send(err)
           return res.status(200).send(product)
         })
+  
 
 })  
 

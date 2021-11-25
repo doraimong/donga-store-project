@@ -13,6 +13,7 @@ function DetailProductPage(props) {
     useEffect(() => {
        axios.get(`/api/product/products_by_id?id=${productId}&type=single`) //쿼리로 각 제품별 주소연결 / type=single 은 여러개의 물건이 아닌 단일품목으로 가져옴을 의미
             .then(response => {
+                console.log("왜 글쓴이는",response.data)
                 setProduct(response.data[0])
             })
             .catch(err => alert(err))
@@ -23,7 +24,8 @@ function DetailProductPage(props) {
             <div style={{ display:'flex', justifyContent: 'center' }}>
                 <h1>{Product.title}</h1>
             </div>
-            <br/>
+            <hr/>
+            <br/><br/>
 
             <Row gutter={[16, 16]}> {/*16,16 여백 주기*/}
                 <Col lg={12} sm={24}>
