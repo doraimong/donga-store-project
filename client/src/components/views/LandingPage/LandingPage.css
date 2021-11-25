@@ -1,0 +1,11 @@
+@import '~antd/dist/antd.css';
+
+.contentStyle  {
+        height: 100%;
+        color: #fff;
+        line-Height: 100%;
+        text-Align: center;
+        background: #a5b10000;
+        justify-content: center;
+        margin-bottom: auto;
+      };

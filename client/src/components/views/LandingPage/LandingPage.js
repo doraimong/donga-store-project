@@ -10,6 +10,7 @@ import SearchFeature from './Sections/SearchFeature';   //검색 기능 컴포�
 import Recommendation from '../Recommendation/Recommendation';
 import { continents, price } from './Sections/Datas'
 import { useSelector } from "react-redux";
+import './LandingPage.css';
 
 
 function LandingPage() {
@@ -136,10 +137,26 @@ function LandingPage() {
         getProducts(body)
     }
 
+    
+
     //console.log("유저",user)
     //user.userData ? console.log("있다.") : console.log("없다")
     return (
         <div style={{ width: '75%', margin: '3rem auto'}}>
+            
+            {/*캐러셀 */}
+            <Carousel autoplay className="contentStyle">
+                <div>
+                    <img style={{ width: '100%', maxHeight: '100%', justifyContent: 'center'}} src={'http://localhost:5000/uploads/mainImage.JPG'}/>
+                </div>
+                <div>
+                    <img style={{ width: '100%', maxHeight: '100%', justifyContent: 'center'}} src={'http://localhost:5000/uploads/subImage1.JPG'}/>
+                </div>
+                
+            </Carousel>
+            <p/>
+
+            {/*추천*/}
             <div>
                 {user.userData && user.userData.isAuth && user.userData.cart.length>0? <Recommendation /> : false}    {/* 로그인 한 상태 && 인증된상태 && 카트에 상품이 있을때 */}
                 {/*console.log("여기",user.userData)*/}
