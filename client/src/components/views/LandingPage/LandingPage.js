@@ -197,11 +197,11 @@ function LandingPage() {
             {PostSize >= Limit &&   
                 <div style={{  display: 'flex', justifyContent: 'center'}}>
                 <button onClick={loadMoreHandler}>더보기</button>
-            </div>
+            </div> 
             }
         </div>
     )
 }
 
 export default LandingPage
-//test
+//tests
