@@ -8,6 +8,20 @@ const cookieParser = require("cookie-parser");
 
 const config = require("./config/key");
 
+const http = require("http") //http 가 있어야 socket을 쓸 수 있다.
+const server = http.createServer(app);
+const socketIO = require("socket.io")
+
+const io = socketIO(server);    //socket에 server를 담는다 -> io를 통해서 메세지 전달 등 제어 할거다
+
+//연결이 되었을때
+io.on("connection",(socket)=>{
+  console.log('소켓 연결완료');
+  socket.on("chatting", (data)=> {
+    console.log(data);
+  })
+})
+
 // const mongoose = require("mongoose");
 // mongoose
 //   .connect(config.mongoURI, { useNewUrlParser: true })

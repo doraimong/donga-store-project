@@ -12,6 +12,7 @@ import DetailProductPage from './views/DetailProductPage/DetailProductPage';
 import CartPage from './views/CartPage/CartPage';
 import HistoryPage from './views/HistoryPage/HistoryPage';
 import Test from './views/Test';
+import Chat from './views/Chat/Chat'
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -32,7 +33,7 @@ function App() {
           <Route exact path="/user/cart" component={Auth(CartPage, true)} />  {/*로그인한 사람만 이용 true*/}
           <Route exact path="/history" component={Auth(HistoryPage, true)} />
           <Route exact path="/test" component={Auth(Test, false)} />
-
+          <Route exact path="/Chat" component={Auth(Chat, false)} />
         </Switch>
       </div>
       <Footer />

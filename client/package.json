@@ -7,7 +7,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "formik": "^1.5.8",
-    "moment": "^2.24.0",
+    "moment": "^2.29.1",
     "react": "^16.8.6",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.8.6",
@@ -21,6 +21,8 @@
     "redux": "^4.0.0",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0",
     "swiper": "^7.2.0",
     "yup": "^0.27.0"
   },
